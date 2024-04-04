@@ -10,6 +10,7 @@ function love.load()
         directionQueue = {'right'}
         snakeAlive = true
         timer = 0
+        gameSpeed = 0.05
         snakeSegments = {
             { x = 102, y = 100 },
             { x = 101, y = 100 },
@@ -26,13 +27,6 @@ function love.load()
             { x =  90, y = 100 },
             { x =  89, y = 100 },
             { x =  88, y = 100 },
-            { x =  87, y = 100 },
-            { x =  86, y = 100 },
-            { x =  85, y = 100 },
-            { x =  84, y = 100 },
-            { x =  83, y = 100 },
-            { x =  82, y = 100 },
-            { x =  81, y = 100 },
         }
         moveFood()
     end
@@ -40,7 +34,7 @@ function love.load()
     function moveFood()
         --foodPosition = { x = love.math.random( 1, gridXCount), y = love.math.random( 1, gridYCount)}
         local validFoodPositions = {}
-
+        
         for foodX = 1, gridXCount do
             for foodY = 1, gridYCount do
                 local valid = true 
@@ -57,6 +51,7 @@ function love.load()
             end
         end
         foodPosition = validFoodPositions[love.math.random(#validFoodPositions)]
+        gameSpeed = gameSpeed * 0.9
     end
 
     reset()
@@ -68,7 +63,7 @@ function love.update(dt)
     
 
     if snakeAlive then
-        if timer >= 0.06 then
+        if timer >= gameSpeed then
             timer = 0
 
             if #directionQueue > 1 then
