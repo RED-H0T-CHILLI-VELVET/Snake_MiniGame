@@ -32,7 +32,6 @@ function love.load()
     end
 
     function moveFood()
-        --foodPosition = { x = love.math.random( 1, gridXCount), y = love.math.random( 1, gridYCount)}
         local validFoodPositions = {}
         
         for foodX = 1, gridXCount do
@@ -52,15 +51,16 @@ function love.load()
         end
         foodPosition = validFoodPositions[love.math.random(#validFoodPositions)]
         gameSpeed = gameSpeed * 0.9
+        sqrLeftSide = foodPosition.x - cellSize / 2
+        sqrRightSide = foodPosition.x + cellSize / 2
+        sqrTopSide = foodPosition.y - cellSize / 2
+        sqrBottonSide = foodPosition.y + cellSize / 2
     end
-
     reset()
 end
 
 function love.update(dt)
     timer = timer + dt
-
-    
 
     if snakeAlive then
         if timer >= gameSpeed then
@@ -109,7 +109,10 @@ function love.update(dt)
 
             if canMove then
                 table.insert(snakeSegments, 1, { x = nextXPosition, y = nextYPosition})
-                if snakeSegments[1].x == foodPosition.x and snakeSegments[1].y == foodPosition.y then
+                if snakeSegments[1].x >= sqrLeftSide and
+                    snakeSegments[1].x <= sqrRightSide and
+                    snakeSegments[1].y >= sqrTopSide and
+                    snakeSegments[1].y <= sqrBottonSide then
                     moveFood()                                                                       
                 else                                                                                 
                     table.remove(snakeSegments)                                                      
@@ -121,7 +124,6 @@ function love.update(dt)
     elseif timer >= 2 then
         reset()
     end
-
 
 end
 
